@@ -3,4 +3,4 @@ project(InnoBootCamp)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(InnoBootCamp main.cpp)
+add_executable(InnoBootCamp tasks//2//Task1.cpp)
