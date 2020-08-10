@@ -1,6 +1,6 @@
 #include <iostream>
 
-int mai() {
-    std::cout << "Hello, World!" << std::endl;
+int main() {
+    std::cout << "Please choose task, that you need, in \"CMakeLists.txt\" file" << std::endl;
     return 0;
 }
