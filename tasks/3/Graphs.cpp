@@ -1,18 +1,15 @@
 //
 // Created by Andrey on 11.08.2020.
+// *Updated by Andrey on 12.08.2020.
 //
 
 #include <iostream>
 #include <vector>
 
-//4
-//0 10 8 6
-//10 0 3 7
-//8 3 0 1
-//6 7 1 0
-
 int size;
 int currentMinSize;
+
+bool isFind = false;
 
 std::vector<int> road;
 std::vector<int> currentRoad;
@@ -27,7 +24,6 @@ std::vector<std::vector<int>> distances;
  */
 void initialize() {
     std::cin >> size;
-    currentMinSize = 200000;
     road.resize(size + 1);
     currentRoad.resize(size + 1);
 
@@ -43,52 +39,58 @@ void initialize() {
     }
 }
 
-int func(std::vector<int> arr, int sum, int lengthOfWay, int indexPrevElement) {
-    if (sum >= currentMinSize) return -1;
+/**
+ * Method for printing a vector.
+ * In this case: Printed a graph's currentRoad.
+ */
+void printRoad(const std::vector<int>& arr) {
+    std::cout << "Path: ";
+    for (int i : arr) {
+        std::cout << i << ' ';
+    }
+    std::cout << '\n';
+}
 
+void func(std::vector<int> arr, int sum, int lengthOfWay, int indexPrevElement) {
+    if (isFind && sum >= currentMinSize) return;
     currentRoad[lengthOfWay] = indexPrevElement;
 
-    if (++lengthOfWay > size - 2) {
+    lengthOfWay++;
+
+    if (lengthOfWay > size - 1) return;
+    if (lengthOfWay == size - 1) {
         for (int i = 0; i < size; ++i) {
             if (arr[i] == 0) continue;
             if (i == indexPrevElement) continue;
             currentRoad[lengthOfWay] = i;
-            currentRoad[++lengthOfWay] = 0;
+            currentRoad[lengthOfWay+1] = 0;
 
             sum += distances[indexPrevElement][i] +
                     distances[0][i];
-            if (sum < currentMinSize) {
+            if (!isFind || sum < currentMinSize) {
+                isFind = true;
                 currentMinSize = sum;
                 road = currentRoad;
             }
-            return currentMinSize;
+
+            currentRoad[lengthOfWay] = 0;
+            return;
         }
     } else {
         for (int i = 0; i < size; ++i) {
             if (arr[i] == 0) continue;
 
-            std::vector <int> temp(0);
+            std::vector<int> temp(0);
             for (int j = 0; j < size; ++j) {
+                if (arr[j] == 0) {
+                    temp.push_back(0);
+                    continue;
+                }
                 temp.push_back((lengthOfWay % 2 == 1) ? distances[j][i]
-                                                 : distances[i][j]);
+                                                      : distances[i][j]);
             }
-            for (int j : currentRoad) {
-                temp[currentRoad[j]] = 0;
-            }
-
-            func(temp, sum+arr[i], lengthOfWay, i);
+            func(temp, sum + arr[i], lengthOfWay, i);
         }
-    }
-    return currentMinSize;
-}
-
-/**
- * Method for printing an array.
- * In this case: Printed a graph's currentRoad.
- */
-void printRoad(int* arr) {
-    for (int i = 0; i <= sizeof(arr); i++) {
-        std::cout << arr[i] << ' ';
     }
 }
 
@@ -97,5 +99,5 @@ int main() {
     func(distances[0], 0, 0, 0);
 
     std::cout << currentMinSize << std::endl;
-    printRoad(road.data());
+    printRoad(road);
 }
