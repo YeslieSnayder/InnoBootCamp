@@ -14,7 +14,8 @@ set(CMAKE_CXX_STANDARD 20)
 #add_executable(InnoBootCamp tasks//2//Task5.cpp)
 #add_executable(InnoBootCamp tasks//3//Graphs.cpp)
 #add_executable(InnoBootCamp tasks//4//Task1.cpp)
+#add_executable(InnoBootCamp tasks//4//Task2.cpp)
 
-add_executable(InnoBootCamp tasks//4//Task2.cpp)
+add_executable(InnoBootCamp tasks//4//Task3.cpp)
 
 #add_executable(InnoBootCamp main.cpp)
